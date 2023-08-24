@@ -1,0 +1,82 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.1.2'
+    id 'io.spring.dependency-management' version '1.1.2'
+    id "org.openapi.generator" version '7.0.0-beta'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.example:sysid-dbid-repository:0.0.1-SNAPSHOT'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+	//implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+    implementation('org.openapitools:openapi-generator-gradle-plugin:7.0.0-beta') {
+        exclude module: 'commons-logging'
+    }
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+sourceSets {
+    generated {
+        java {
+            srcDirs 'generated/src/main/java'
+        }
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    jvmArgs = ['-Dspring.profiles.active=ut']
+}
+
+// トップダウン方式：API定義YAMLからソース生成（コンパイラ警告が出る状態で出力されてしまうなど弊害がある）
+// ボトムアップ方式：実装からSwaggerUIで定義書生成
+// どちらも一長一短であるため検討が必要
+openApiGenerate {
+    // reference: https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/spring.md
+    generatorName = 'spring'
+    inputSpec = "$projectDir/src/openapi/specs/fncid.openapi.yml"
+    outputDir = "$projectDir/generated"
+    apiPackage = 'com.example.sysid.controller.rest'
+    apiNameSuffix = 'Controller'
+    modelPackage = 'com.example.sysid.model.resources'
+    modelNameSuffix = ''
+    configOptions = [
+        dateLibrary: 'java8',
+        interfaceOnly: 'true',
+        skipDefaultInterface: 'true',
+        useResponseEntity: 'false',
+        useSpringBoot3: 'true',
+        useSpringController: 'true',
+        useTags: 'true',
+        hideGenerationTimestamp: 'true'
+    ]
+}

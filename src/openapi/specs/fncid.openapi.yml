@@ -1,0 +1,57 @@
+openapi: 3.0.1
+info:
+  title: rbd-java17-example
+  description: Example project for Spring Boot & R-Commons
+  version: 0.0.1-SNAPSHOT
+servers:
+  - url: http://localhost:8080/example
+tags:
+  - name: store-attaches
+    description: 他サイト向け店舗情報
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+paths:
+  /store-attaches/list:
+    get:
+      tags:
+        - store-attaches
+      summary: 他サイト向け店舗情報取得
+      description: |-
+        リクエストに指定された店舗IDリストに紐づく対向クライアントID、対向店舗IDのリストを返す
+        ※対向クライアントID／対向店舗IDが取得できない場合でもnullで返す
+      operationId: getAttachedInfoList
+      parameters:
+        - name: storeIdList
+          in: query
+          description: 店舗IDリスト
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+          example: KR00000001
+      responses:
+        "200":
+          description: 正常終了、処理エラーの場合も含む
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StoreAttachedInfoResource'
+components:
+  schemas:
+    StoreAttachedInfoResource:
+      description: 他サイト向け店舗情報
+      type: object
+      properties:
+        storeId:
+          type: string
+          description: 店舗ID
+        pairStoreId:
+          type: string
+          description: 対向店舗ID
+        pairClientUserId:
+          type: string
+          description: 対向クライアントID

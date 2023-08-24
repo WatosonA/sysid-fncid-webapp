@@ -1,0 +1,63 @@
+server:
+  port: 8080
+  servlet:
+    session:
+      timeout: 1m
+  tomcat:
+    accesslog:
+      enabled: true
+      max-days: 60
+      directory: ./logs
+    max-connections: 20
+    threads:
+      max: 20
+    connection-timeout: 1000
+    remoteip.protocol-header: "X-Forwarded-Proto"
+spring:
+  main:
+    banner-mode: "console"
+  mail:
+    host: 127.0.0.1 # メールサーバ
+    port: 1025 # メールサーバポート
+    properties:
+      "[mail.smtp.auth]": false # メールサーバ認証無し
+      "[mail.smtp.starttls.enable]": true
+      "[mail.smtp.timeout]": 30000 # タイムアウト(ミリ秒)
+  datasource:
+    name: default
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #driver-class-name: net.sf.log4jdbc.DriverSpy
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/maindb?characterEncoding=utf8&useSSL=false&rewriteBatchedStatements=true
+    #url: jdbc:log4jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/maindb?characterEncoding=utf8&useSSL=false&rewriteBatchedStatements=true
+    username: ${DB_USERNAME:webapp}
+    password: ${DB_PASSWORD:webapp}
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 1
+      connection-timeout: 1000
+      validation-timeout: 1000
+      leak-detection-threshold: 30000 # デバッグ用
+  mvc:
+    log-request-details: true
+    dispatch-trace-request: true
+  security:
+    user:
+      name: local
+      password: local
+
+doma:
+  query-timeout: 10 # Number of seconds the driver will wait for a Statement object to execute. Ignored unless this value is greater than 0.
+
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true
+
+application:
+  exception-handler:
+    response:
+      debug: true
+
+# debug: true

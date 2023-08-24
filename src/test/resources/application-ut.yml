@@ -1,0 +1,45 @@
+spring:
+  main:
+    banner-mode: "off"
+  mail:
+    host: 127.0.0.1 # メールサーバ
+    port: 9025 # メールサーバポート
+    properties:
+      "[mail.smtp.auth]": false # メールサーバ認証無し
+      "[mail.smtp.starttls.enable]": true
+      "[mail.smtp.timeout]": 30000 # タイムアウト(ミリ秒)
+  datasource:
+    name: dataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #driver-class-name: net.sf.log4jdbc.DriverSpy
+    url: jdbc:mysql://localhost:3306/testdb?characterEncoding=utf8&useSSL=false&rewriteBatchedStatements=true
+    #url: jdbc:log4jdbc:mysql://localhost:3306/testdb?characterEncoding=utf8&useSSL=false&rewriteBatchedStatements=true
+    username: junit
+    password: junit
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 5000
+      validation-timeout: 5000
+      leak-detection-threshold: 30000 # デバッグ用
+  mvc:
+    log-request-details: false
+    dispatch-trace-request: false
+  security:
+    user:
+      name: junit
+      password: junit
+
+doma:
+  query-timeout: 5 # Number of seconds the driver will wait for a Statement object to execute. Ignored unless this value is greater than 0.
+
+springdoc:
+  api-docs:
+    enabled: false
+
+application:
+  accesskey:
+    checkDefault: false
+
+# debug: true

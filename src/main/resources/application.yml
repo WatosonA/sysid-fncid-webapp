@@ -1,0 +1,40 @@
+server:
+  servlet:
+    context-path: /example
+  # error:
+    # path: /error # エラーページのパスの定義
+    # whitelabel:
+    #   enabled: false
+
+spring:
+  profiles:
+    default: local
+  main:
+    allow-bean-definition-overriding: true
+  mvc:
+    throw-exception-if-no-handler-found: true # 404でも例外throw
+    log-resolved-exception: false # エラー発生時にorg.springframeworkパッケージでWARNログが自動出力されないようにする
+    hiddenmethod:
+      filter:
+        enabled: false # HiddenHttpMethodFilterを有効にする
+  groovy:
+    template:
+      check-template-location: false
+  jackson:
+    default-property-inclusion: NON_NULL
+
+management:
+  health:
+    diskspace:
+      enabled: false
+
+doma:
+  dialect: MYSQL
+  sql-file-repository: GREEDY_CACHE
+  naming: SNAKE_UPPER_CASE # Type of Naming (NONE, LOWER_CASE, UPPER_CASE, SNAKE_LOWER_CASE, SNAKE_UPPER_CASE, LENIENT_SNAKE_LOWER_CASE, LENIENT_SNAKE_UPPER_CASE, DEFAULT)
+  exception-translation-enabled: true # Whether convert JdbcException into DataAccessException.
+  #fetch-size: 0 # Hint to the number of rows that should be fetched. Ignored unless this value is greater than 0.
+  batch-size: 1000 # Size in executing PreparedStatement#addBatch(). Regarded as 1 unless this value is greater than 1.
+  data-source-name: default # Datasource name.
+  exception-sql-log-type: FORMATTED # Type of SQL log in the exception. (RAW, FORMATTED, NONE)
+  jdbc-logger: JUL
