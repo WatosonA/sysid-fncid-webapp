@@ -66,6 +66,13 @@ tasks.named('test') {
     useJUnitPlatform()
     jvmArgs = ['-Dspring.profiles.active=ut']
 }
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+        csv.enabled false
+    }
+}
 
 // トップダウン方式：API定義YAMLからソース生成（コンパイラ警告が出る状態で出力されてしまうなど弊害がある）
 // ボトムアップ方式：実装からSwaggerUIで定義書生成
