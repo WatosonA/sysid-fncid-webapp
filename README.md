@@ -8,6 +8,10 @@
 ## Requirements
 - JDK 17
 
+## Features
+- Spring Boot 3
+- Open API 3.0 (Swagger)
+
 ## Quick Start
 
 ### ローカル環境での起動方法

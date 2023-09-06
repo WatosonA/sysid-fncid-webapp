@@ -1,12 +1,6 @@
 package com.example.sysid.component.advice;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.example.sysid.component.exception.ApplicationException;
 import org.apache.catalina.connector.ClientAbortException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -25,7 +18,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.example.sysid.component.exception.ApplicationException;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 例外ハンドラ。
@@ -34,7 +32,7 @@ import com.example.sysid.component.exception.ApplicationException;
 public class ExceptionRestControllerAdvice extends ResponseEntityExceptionHandler {
 
     @Value("${application.exception-handler.response.debug:false}")
-    private boolean debuggable;
+    protected boolean debuggable;
 
     /**
      * ResponseBody の BeanValidation のチェック結果をハンドルします.
@@ -42,15 +40,6 @@ public class ExceptionRestControllerAdvice extends ResponseEntityExceptionHandle
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        return handleValidationException(ex, ex.getBindingResult(), request);
-    }
-
-    /**
-     * BeanValidation のチェック結果をハンドルします.
-     */
-    @Override
-    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatusCode status,
-            WebRequest request) {
         return handleValidationException(ex, ex.getBindingResult(), request);
     }
 

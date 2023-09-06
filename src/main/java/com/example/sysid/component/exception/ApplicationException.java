@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.io.Serial;
+
 /**
  * アプリケーション例外.
  */
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ApplicationException extends RuntimeException {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** コード */
@@ -38,6 +41,7 @@ public class ApplicationException extends RuntimeException {
      *
      * @param code to set
      * @param statusCode to set
+     * @param cause to set
      */
     ApplicationException(String code, HttpStatus statusCode, Throwable cause) {
         super(cause);
