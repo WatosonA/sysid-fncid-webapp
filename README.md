@@ -16,6 +16,9 @@
 
 ### ローカル環境での起動方法
 
+#### RepositoryライブラリのPublish
+sysid-dbid-repositoryのREADME.mdを参照
+
 #### DB起動
 sysid-dbid-repositoryのREADME.mdを参照
 
