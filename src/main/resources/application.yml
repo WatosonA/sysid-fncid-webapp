@@ -37,4 +37,4 @@ doma:
   batch-size: 1000 # Size in executing PreparedStatement#addBatch(). Regarded as 1 unless this value is greater than 1.
   data-source-name: default # Datasource name.
   exception-sql-log-type: FORMATTED # Type of SQL log in the exception. (RAW, FORMATTED, NONE)
-  jdbc-logger: JUL
+  jdbc-logger: SLF4J

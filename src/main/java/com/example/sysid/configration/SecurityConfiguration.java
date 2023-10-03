@@ -16,7 +16,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(customizer -> customizer
+        http.csrf(csrf -> csrf.disable()) // statelessの場合はCSRFチェックをOFF
+                .authorizeHttpRequests(customizer -> customizer
                 .requestMatchers("/manage").authenticated() // /manageは認証が必要なページ
                 .anyRequest().permitAll()); // その他のリクエストはすべて許可
         return http.build();

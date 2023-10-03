@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.sysid.model.resources.StoreAttachedInfoResource;
-import com.example.sysid.service.v900.StoreInfoService;
+import com.example.sysid.service.StoreInfoService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

@@ -4,10 +4,6 @@ server:
     session:
       timeout: 1m
   tomcat:
-    accesslog:
-      enabled: true
-      max-days: 60
-      directory: ./logs
     max-connections: 20
     threads:
       max: 20
@@ -26,9 +22,7 @@ spring:
   datasource:
     name: default
     driver-class-name: com.mysql.cj.jdbc.Driver
-    #driver-class-name: net.sf.log4jdbc.DriverSpy
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/maindb?characterEncoding=utf8&useSSL=false&rewriteBatchedStatements=true
-    #url: jdbc:log4jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/maindb?characterEncoding=utf8&useSSL=false&rewriteBatchedStatements=true
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/maindb
     username: ${DB_USERNAME:webapp}
     password: ${DB_PASSWORD:webapp}
     type: com.zaxxer.hikari.HikariDataSource
@@ -38,13 +32,33 @@ spring:
       connection-timeout: 1000
       validation-timeout: 1000
       leak-detection-threshold: 30000 # デバッグ用
-  mvc:
+  jackson:
+    serialization:
+      indent-output: true
+  mvc: # アクセスログ出力詳細化
     log-request-details: true
     dispatch-trace-request: true
+  codec: # HTTPクライアントログ出力詳細化
+    log-request-details: true
   security:
     user:
       name: local
       password: local
+
+logging:
+  pattern:
+    console: "%d{yyyy/MM/dd HH:mm:ss} %highlight(%-5level) %X{X-REQUEST-ID} %red(%logger) - %msg%n"
+  level:
+    root: info
+    web: trace # アクセスログ出力設定（traceで出力）
+    org:
+      apache: warn
+      hibernate: warn
+      springframework:
+        "[jdbc.datasource]": debug # トランザクションログ出力設定 (出力したい場合はdebugにする)
+      seasar:
+        "[doma.jdbc.LogKind.SQL.SELECT]": debug # SQLログ出力設定（出力したい場合はdebugにする）
+    "[jp.co.aeonst.asf.common.component.aspect]": info # 実行時間計測ログ出力設定（出力したい場合はinfoにする）
 
 doma:
   query-timeout: 10 # Number of seconds the driver will wait for a Statement object to execute. Ignored unless this value is greater than 0.
